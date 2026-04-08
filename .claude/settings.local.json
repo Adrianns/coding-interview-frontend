@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_engram_engram__mem_search",
+      "WebFetch(domain:74j6q7lg6a.execute-api.eu-west-1.amazonaws.com)",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=0&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=COP&amount=50&amountCurrencyId=TATUM-TRON-USDT\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k: type\\(v\\).__name__ for k,v in d.get\\('data',{}\\).items\\(\\)}, indent=2\\)\\)\")",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=1&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=COP&amount=100000&amountCurrencyId=COP\")",
+      "Bash(python3 -c ':*)",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=0&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=VES&amount=50&amountCurrencyId=TATUM-TRON-USDT\")",
+      "Bash(flutter --version)",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=0&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=VES&amount=500&amountCurrencyId=TATUM-TRON-USDT\")",
+      "Bash(git:*)",
+      "Bash(flutter create:*)",
+      "mcp__plugin_engram_engram__mem_save",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter devices:*)",
+      "Bash(open:*)",
+      "Bash(nc -w 1 localhost 54116)",
+      "Bash(xcrun simctl:*)",
+      "Bash(flutter run:*)",
+      "Bash(flutter pub:*)",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=0&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=VES&amount=100&amountCurrencyId=TATUM-TRON-USDT\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s \"https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations?type=0&cryptoCurrencyId=TATUM-TRON-USDT&fiatCurrencyId=COP&amount=100&amountCurrencyId=TATUM-TRON-USDT\")"
+    ]
+  }
+}
