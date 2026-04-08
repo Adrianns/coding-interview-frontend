@@ -29,12 +29,24 @@ class AmountInputField extends StatelessWidget {
         color: AppColors.textDark,
       ),
       decoration: InputDecoration(
-        prefixText: '$currencyCode ',
-        prefixStyle: const TextStyle(
-          color: AppColors.accentOrange,
-          fontWeight: FontWeight.bold,
+        hintText: '0.00',
+        hintStyle: TextStyle(
+          color: AppColors.textGrey.withValues(alpha: 0.5),
+          fontWeight: FontWeight.w400,
           fontSize: 18,
         ),
+        prefixIcon: Padding(
+          padding: const EdgeInsets.only(left: AppSpacing.s16, right: AppSpacing.s8),
+          child: Text(
+            currencyCode,
+            style: const TextStyle(
+              color: AppColors.accentOrange,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: const BorderSide(color: AppColors.borderOrange),

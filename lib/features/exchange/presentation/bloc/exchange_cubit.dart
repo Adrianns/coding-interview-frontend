@@ -21,7 +21,11 @@ class ExchangeCubit extends Cubit<ExchangeState> {
 
     final parsed = double.tryParse(value);
     if (parsed == null || parsed <= 0) {
-      emit(state.copyWith(status: ExchangeStatus.initial, result: null));
+      emit(state.copyWith(
+        status: ExchangeStatus.initial,
+        result: () => null,
+        errorMessage: () => null,
+      ));
       return;
     }
 
@@ -45,7 +49,8 @@ class ExchangeCubit extends Cubit<ExchangeState> {
     emit(state.copyWith(
       sourceCurrency: state.targetCurrency,
       targetCurrency: state.sourceCurrency,
-      result: null,
+      result: () => null,
+      errorMessage: () => null,
     ));
     _fetchIfValid();
   }
@@ -68,11 +73,16 @@ class ExchangeCubit extends Cubit<ExchangeState> {
         targetCurrency: state.targetCurrency,
         amount: parsed,
       );
-      emit(state.copyWith(status: ExchangeStatus.success, result: result));
+      emit(state.copyWith(
+        status: ExchangeStatus.success,
+        result: () => result,
+        errorMessage: () => null,
+      ));
     } on Exception catch (e) {
       emit(state.copyWith(
         status: ExchangeStatus.error,
-        errorMessage: e.toString(),
+        result: () => null,
+        errorMessage: () => e.toString(),
       ));
     }
   }

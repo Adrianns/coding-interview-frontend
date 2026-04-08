@@ -78,14 +78,6 @@ class CurrencySelectorRow extends StatelessWidget {
             ),
           ),
 
-          // Orange line between TENGO and QUIERO labels
-          Positioned(
-            top: 10,
-            left: 100,
-            right: 100,
-            child: Container(height: 1.5, color: AppColors.accentOrange),
-          ),
-
           // Currency items inside the container
           Positioned(
             top: 18,
@@ -182,10 +174,13 @@ class _CurrencyChip extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: AppSpacing.s8),
-        Text(
-          currency.code,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        const SizedBox(width: AppSpacing.s6),
+        Flexible(
+          child: Text(
+            currency.code,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         const SizedBox(width: AppSpacing.s2),
         const Icon(

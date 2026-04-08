@@ -26,6 +26,11 @@ class CurrencyBottomSheet extends StatelessWidget {
   }) {
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
+      ),
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
       ),
@@ -46,7 +51,7 @@ class CurrencyBottomSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: AppSpacing.s12, bottom: AppSpacing.s24),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           // Drag handle
           Container(
@@ -67,11 +72,18 @@ class CurrencyBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.s16),
-          ...currencies.map(
-            (currency) => _CurrencyTile(
-              currency: currency,
-              isSelected: currency == selectedCurrency,
-              onTap: () => onSelected(currency),
+          Expanded(
+            child: ListView.builder(
+              itemCount: currencies.length,
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                final currency = currencies[index];
+                return _CurrencyTile(
+                  currency: currency,
+                  isSelected: currency == selectedCurrency,
+                  onTap: () => onSelected(currency),
+                );
+              },
             ),
           ),
         ],

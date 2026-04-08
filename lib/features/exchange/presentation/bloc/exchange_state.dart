@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../domain/entities/currency.dart';
 import '../../domain/entities/exchange_result.dart';
@@ -32,16 +33,16 @@ class ExchangeState extends Equatable {
     Currency? targetCurrency,
     String? amount,
     ExchangeStatus? status,
-    ExchangeResult? result,
-    String? errorMessage,
+    ValueGetter<ExchangeResult?>? result,
+    ValueGetter<String?>? errorMessage,
   }) {
     return ExchangeState(
       sourceCurrency: sourceCurrency ?? this.sourceCurrency,
       targetCurrency: targetCurrency ?? this.targetCurrency,
       amount: amount ?? this.amount,
       status: status ?? this.status,
-      result: result ?? this.result,
-      errorMessage: errorMessage ?? this.errorMessage,
+      result: result != null ? result() : this.result,
+      errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
     );
   }
 

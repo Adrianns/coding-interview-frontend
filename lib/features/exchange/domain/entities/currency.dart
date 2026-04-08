@@ -43,13 +43,6 @@ class CurrencyRegistry {
 
   static const List<Currency> fiatCurrencies = [
     Currency(
-      id: 'VES',
-      code: 'VES',
-      name: 'Bolivares (Bs)',
-      type: CurrencyType.fiat,
-      iconPath: 'assets/fiat_currencies/VES.png',
-    ),
-    Currency(
       id: 'COP',
       code: 'COP',
       name: 'Pesos Colombianos (COL\$)',
@@ -57,11 +50,18 @@ class CurrencyRegistry {
       iconPath: 'assets/fiat_currencies/COP.png',
     ),
     Currency(
+      id: 'VES',
+      code: 'VES',
+      name: 'Bolivares (Bs)',
+      type: CurrencyType.fiat,
+      iconPath: 'assets/fiat_currencies/VES.png',
+    ),
+    Currency(
       id: 'ARS',
       code: 'ARS',
       name: 'Pesos Argentinos (ARS\$)',
       type: CurrencyType.fiat,
-      iconPath: 'assets/fiat_currencies/VES.png',
+      iconPath: 'assets/fiat_currencies/ARS.png',
     ),
     Currency(
       id: 'PEN',
@@ -82,7 +82,7 @@ class CurrencyRegistry {
       code: 'BOB',
       name: 'Boliviano (Bs)',
       type: CurrencyType.fiat,
-      iconPath: 'assets/fiat_currencies/VES.png',
+      iconPath: 'assets/fiat_currencies/BOB.png',
     ),
   ];
 

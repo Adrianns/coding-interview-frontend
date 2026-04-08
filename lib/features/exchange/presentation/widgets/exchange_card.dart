@@ -48,8 +48,8 @@ class _ExchangeCardState extends State<ExchangeCard> {
           timeValue =
               '\u2248 ${state.result!.estimatedTime.round()} Min';
         } else if (state.status == ExchangeStatus.error) {
-          rateValue = 'Error';
-          receiveValue = 'Error';
+          rateValue = '--';
+          receiveValue = '--';
           timeValue = '--';
         }
 
@@ -94,7 +94,7 @@ class _ExchangeCardState extends State<ExchangeCard> {
                 isLoading: isLoading,
               ),
               ExchangeInfoRow(
-                label: 'Recibiras',
+                label: 'Recibirás',
                 value: receiveValue,
                 isLoading: isLoading,
               ),
@@ -103,6 +103,22 @@ class _ExchangeCardState extends State<ExchangeCard> {
                 value: timeValue,
                 isLoading: isLoading,
               ),
+
+              // Error message
+              if (state.status == ExchangeStatus.error &&
+                  state.errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.s12),
+                  child: Text(
+                    state.errorMessage!
+                        .replaceAll('Exception: ', ''),
+                    style: const TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 13,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               const SizedBox(height: AppSpacing.s24),
 
               // CTA button
@@ -110,7 +126,7 @@ class _ExchangeCardState extends State<ExchangeCard> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: state.status == ExchangeStatus.success
-                      ? () {}
+                      ? () => _onExchangePressed(context, state)
                       : null,
                   child: const Text('Cambiar'),
                 ),
@@ -119,6 +135,23 @@ class _ExchangeCardState extends State<ExchangeCard> {
           ),
         );
       },
+    );
+  }
+
+  void _onExchangePressed(BuildContext context, ExchangeState state) {
+    if (state.result == null) return;
+    final result = state.result!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${state.amount} ${state.sourceCurrency.code} → '
+          '${_numberFormat.format(result.estimatedReceive)} ${state.targetCurrency.code}',
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+      ),
     );
   }
 
