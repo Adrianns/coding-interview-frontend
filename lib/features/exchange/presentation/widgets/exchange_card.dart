@@ -110,8 +110,7 @@ class _ExchangeCardState extends State<ExchangeCard> {
                 Padding(
                   padding: const EdgeInsets.only(top: AppSpacing.s12),
                   child: Text(
-                    state.errorMessage!
-                        .replaceAll('Exception: ', ''),
+                    state.errorMessage!,
                     style: const TextStyle(
                       color: Colors.redAccent,
                       fontSize: 13,

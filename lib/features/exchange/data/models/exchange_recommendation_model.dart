@@ -11,7 +11,7 @@ class ExchangeRecommendationModel {
     final data = json['data'] as Map<String, dynamic>;
 
     if (data.isEmpty) {
-      throw Exception('No exchange offers available for this currency pair');
+      throw Exception('No hay ofertas disponibles para este par de monedas');
     }
 
     final byPrice = data['byPrice'] as Map<String, dynamic>;

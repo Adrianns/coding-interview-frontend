@@ -82,9 +82,24 @@ class ExchangeCubit extends Cubit<ExchangeState> {
       emit(state.copyWith(
         status: ExchangeStatus.error,
         result: () => null,
-        errorMessage: () => e.toString(),
+        errorMessage: () => _mapErrorMessage(e),
       ));
     }
+  }
+
+  String _mapErrorMessage(Exception e) {
+    final msg = e.toString().replaceAll('Exception: ', '');
+
+    if (msg.contains('SocketException') || msg.contains('Failed host lookup')) {
+      return 'Sin conexión a internet. Verificá tu red e intentá de nuevo.';
+    }
+    if (msg.contains('TimeoutException') || msg.contains('timed out')) {
+      return 'La solicitud tardó demasiado. Intentá de nuevo.';
+    }
+    if (msg.contains('No hay ofertas')) {
+      return msg;
+    }
+    return 'Ocurrió un error inesperado. Intentá de nuevo.';
   }
 
   @override
