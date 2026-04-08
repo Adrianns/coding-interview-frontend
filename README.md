@@ -1,10 +1,19 @@
 # Exchange Calculator — Prueba Tecnica Frontend
 
-Calculadora de intercambio de criptomonedas a monedas fiat, construida en Flutter siguiendo Clean Architecture y principios SOLID.
+Calculadora de intercambio de criptomonedas a monedas fiat, construida en Flutter con un patron BLoC + Repository y scaffolding de feature-sliced architecture (screaming architecture).
 
 ## Arquitectura
 
-El proyecto sigue **Clean Architecture** con separacion clara en tres capas, organizado por features:
+### Patron: BLoC + Repository con Feature-Sliced Scaffolding
+
+La estructura se inspira en Clean Architecture pero **no la implementa de forma pura** — no hay use cases (interactors) en la capa de dominio. Para el scope de esta app, agregar use cases seria over-engineering: la logica de negocio es un calculo directo (tasa x monto), no hay orquestacion compleja entre multiples repositorios ni reglas de dominio que justifiquen esa capa adicional.
+
+Lo que si se toma de Clean Architecture:
+- **Separacion en capas** (data, domain, presentation) con contratos abstractos entre ellas
+- **Dependency inversion**: presentation depende de abstracciones de dominio, no de implementaciones de data
+- **Feature-sliced (screaming architecture)**: la estructura de carpetas grita lo que la app hace (`features/exchange/`), no como esta organizada tecnicamente
+
+El flujo real es: **Cubit → Repository (abstracto) → DataSource → API**. Sin use cases de por medio.
 
 ```
 lib/
@@ -15,13 +24,13 @@ lib/
 │   └── theme/                     # Design tokens (colores, spacing, radii)
 │
 └── features/exchange/
-    ├── domain/                    # Reglas de negocio (sin dependencias externas)
+    ├── domain/                    # Entidades y contratos (sin use cases)
     │   ├── entities/              # Currency, ExchangeResult
     │   └── repositories/          # Contrato abstracto del repositorio
     │
-    ├── data/                      # Implementacion de datos
+    ├── data/                      # Implementacion de acceso a datos
     │   ├── datasources/           # Llamadas HTTP al API
-    │   ├── models/                # DTOs con parsing JSON
+    │   ├── models/                # DTOs con parsing JSON → entidades de dominio
     │   └── repositories/          # Implementacion del contrato de dominio
     │
     └── presentation/              # UI y estado
@@ -30,11 +39,12 @@ lib/
         └── widgets/               # Componentes reutilizables
 ```
 
-### Por que esta estructura
+### Por que esta estructura y no Clean Architecture puro
 
-- **Escalabilidad**: Cada feature es autocontenida. Agregar un nuevo feature (ej: historial, notificaciones) no impacta el codigo existente.
-- **Testabilidad**: Las capas estan desacopladas por contratos abstractos. Se puede testear dominio sin UI, data sin dominio, etc.
-- **Mantenibilidad**: El flujo de dependencias es unidireccional: `presentation → domain ← data`. Ningun import cruza capas hacia arriba.
+- **Pragmatismo**: Los use cases serian wrappers pass-through de una sola linea que solo llaman al repositorio. Cero valor agregado para este scope.
+- **Preparado para escalar**: Si la app crece y aparece logica compleja (ej: validar limites de cambio, combinar datos de multiples fuentes), se agrega la capa de use cases sin refactorear lo existente. El scaffolding ya esta listo.
+- **Screaming architecture**: Cualquier dev nuevo abre `lib/features/` y sabe que hace la app. Cada feature es autocontenida — agregar un nuevo feature (historial, notificaciones) no impacta el codigo existente.
+- **Testabilidad**: Las capas estan desacopladas por contratos abstractos. Se puede testear el Cubit con un mock del repositorio, o el repositorio con un mock del datasource, sin levantar UI ni HTTP.
 
 ## Stack Tecnico
 
