@@ -46,6 +46,7 @@ class ExchangeCubit extends Cubit<ExchangeState> {
   }
 
   void swapCurrencies() {
+    _debounceTimer?.cancel();
     emit(state.copyWith(
       sourceCurrency: state.targetCurrency,
       targetCurrency: state.sourceCurrency,
@@ -67,39 +68,24 @@ class ExchangeCubit extends Cubit<ExchangeState> {
     final parsed = double.tryParse(state.amount);
     if (parsed == null || parsed <= 0) return;
 
-    try {
-      final result = await _repository.getExchangeRate(
-        sourceCurrency: state.sourceCurrency,
-        targetCurrency: state.targetCurrency,
-        amount: parsed,
-      );
-      emit(state.copyWith(
-        status: ExchangeStatus.success,
-        result: () => result,
-        errorMessage: () => null,
-      ));
-    } on Exception catch (e) {
-      emit(state.copyWith(
+    final result = await _repository.getExchangeRate(
+      sourceCurrency: state.sourceCurrency,
+      targetCurrency: state.targetCurrency,
+      amount: parsed,
+    );
+
+    result.fold(
+      (failure) => emit(state.copyWith(
         status: ExchangeStatus.error,
         result: () => null,
-        errorMessage: () => _mapErrorMessage(e),
-      ));
-    }
-  }
-
-  String _mapErrorMessage(Exception e) {
-    final msg = e.toString().replaceAll('Exception: ', '');
-
-    if (msg.contains('SocketException') || msg.contains('Failed host lookup')) {
-      return 'Sin conexión a internet. Verificá tu red e intentá de nuevo.';
-    }
-    if (msg.contains('TimeoutException') || msg.contains('timed out')) {
-      return 'La solicitud tardó demasiado. Intentá de nuevo.';
-    }
-    if (msg.contains('No hay ofertas')) {
-      return msg;
-    }
-    return 'Ocurrió un error inesperado. Intentá de nuevo.';
+        errorMessage: () => failure.message,
+      )),
+      (exchangeResult) => emit(state.copyWith(
+        status: ExchangeStatus.success,
+        result: () => exchangeResult,
+        errorMessage: () => null,
+      )),
+    );
   }
 
   @override
